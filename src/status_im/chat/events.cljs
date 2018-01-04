@@ -227,6 +227,7 @@
                                    (mapv #(vector :chat-received-message/add %)))]
       {:dispatch-n messages-events})))
 
+;; TODO(alwx): can be simplified
 (handlers/register-handler-fx
   :account-generation-message
   [(re-frame/inject-cofx :get-stored-message)]

@@ -192,8 +192,10 @@
                                                   (assoc :preview (pr-str preview)))
                        :dispatch-n              [[:chat-send-message/send-command! params']]}]
 
-    (cond-> (merge cofx (chat-model/upsert-chat (assoc cofx :get-stored-chat get-stored-chat :now now)
-                                                {:chat-id chat-id}))
+    (cond-> (merge cofx
+                   (chat-model/upsert-chat (assoc cofx :get-stored-chat get-stored-chat :now now)
+                                           {:chat-id chat-id})
+                   (dissoc result :db))
 
       (:to-message command')
       (assoc :chat-requests/mark-as-answered {:chat-id    chat-id

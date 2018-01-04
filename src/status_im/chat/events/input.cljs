@@ -467,14 +467,13 @@
         ;; no command detected, when not empty, proceed by sending text message without command processing
         (if (str/blank? input-text)
           {:db db}
-          (let [cofx' (message-model/send-message cofx
-                                                  {:message  input-text
-                                                   :chat-id  current-chat-id
-                                                   :identity current-public-key
-                                                   :address  (:accounts/current-account-id db)})]
-            (assoc cofx' :db (-> (:db cofx')
-                                 (set-chat-input-metadata nil)
-                                 (set-chat-input-text nil)))))))))
+          (message-model/send-message (assoc cofx :db (-> db
+                                                          (set-chat-input-metadata nil)
+                                                          (set-chat-input-text nil)))
+                                      {:message  input-text
+                                       :chat-id  current-chat-id
+                                       :identity current-public-key
+                                       :address  (:accounts/current-account-id db)}))))))
 
 ;; TODO: remove this handler and leave only helper fn once all invocations are refactored
 (handlers/register-handler-db
